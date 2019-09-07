@@ -1,10 +1,12 @@
-from tkinter import *;
-from winsound import *;
-from textblob import TextBlob;
-from matplotlib import *;
-import csv;
-import tweepy;
-import time;
+from tkinter import *
+from winsound import *
+from textblob import TextBlob
+from matplotlib import *
+import csv
+import tweepy
+import time
+import os
+import webbrowser
 
 try:
     # Python2
@@ -16,22 +18,22 @@ except ImportError:
     from urllib.request import urlopen
 
 class SentimentApp:
-    Selection = 0;
-    VerifiedUser = 0;
-    GraphSelection1 = 0;
+    Selection = 0
+    VerifiedUser = 0
+    GraphSelection1 = 0
     VRS_Scan = 0
 
 
     def __init__(self):
-        print("hello");
-        self.tweets = [];
-        self.tweetText = [];
+        print("hello")
+        self.tweets = []
+        self.tweetText = []
 
     def LoginMenu(self):
-        import winsound;
-        winsound.PlaySound('BtnClick2.wav', winsound.SND_ASYNC);
-        winsound.PlaySound('BtnClick2.wav', winsound.SND_ASYNC);
-        self.LoginWindow = Tk();
+        import winsound
+        winsound.PlaySound('BtnClick2.wav', winsound.SND_ASYNC)
+        winsound.PlaySound('BtnClick2.wav', winsound.SND_ASYNC)
+        self.LoginWindow = Tk()
         self.LoginWindow.title("Security Menu");
         self.LoginWindow.geometry("600x600");
         photoImage = PhotoImage(file="#2.png");
@@ -50,6 +52,11 @@ class SentimentApp:
         ButtonLogin.place(relx="0.455", rely="0.555");
         RefreshButton = Button(self.LoginWindow, text=" ♦ ",bg="#050529",fg = "#15AFAD",command=self.SoundEffect1); RefreshButton.place(relx="0.005", rely="0.005");
         self.LoginWindow.mainloop();
+
+    def OpenTwitterWeb(self):
+        import winsound;
+        winsound.PlaySound('BtnClick2.wav', winsound.SND_ASYNC);
+        webbrowser.open_new("https://www.twitter.com/");
 
     def LoginCheck(self):
         import winsound;
@@ -83,8 +90,9 @@ class SentimentApp:
         #print("Well done");
         self.MainMenuWindow = Tk();
         self.MainMenuWindow.title("Sentiment Analysis Menu");
-        self.MainMenuWindow.geometry("600x600");
-        photoImage = PhotoImage(file="#8.png", master=self.MainMenuWindow);
+        self.MainMenuWindow.geometry("1920x1080");
+        self.MainMenuWindow.state('zoomed');
+        photoImage = PhotoImage(file="CatalystV2 Files/BgMenuSkl.png", master=self.MainMenuWindow);
         BgImage = Label(self.MainMenuWindow, image=photoImage);
         BgImage.pack();
         #LabelWelcome = Label(self.MainMenuWindow, text="Sentiment Analysis System", bg="#7c0000", fg="#00d2f7",font=("Agency FB bold", 25), width="48", height="1");
@@ -95,41 +103,38 @@ class SentimentApp:
         #LabelAnalysisTwitterPostA.place(relx="0.055", rely="0.415");
         #LabelAnalysisTwitterPostB = Label(self.MainMenuWindow, text="Analyze All Tweets (User B)", bg="#7c0000",fg="#00d2f7", font=("Agency FB bold", 25), width="25", height="1");
         #LabelAnalysisTwitterPostB.place(relx="0.055", rely="0.515");
-        ImgButton0 = PhotoImage(file="btn#2.png");
-        ImgButton1 = PhotoImage(file="btn#1.png");
+        ImgButton0 = PhotoImage(file="Button1.png");
+        ImgButton1 = PhotoImage(file="CatalystV2 Files/Btn1.png"); #Lexicon Analysis
+        ImgButton2 = PhotoImage(file="CatalystV2 Files/Btn2.png"); #Twitter Analysis
+        ImgButton3 = PhotoImage(file="CatalystV2 Files/Btn3.png"); #VRS Analysis
+        ImgButton4 = PhotoImage(file="CatalystV2 Files/Btn4.png"); #Twitter Site
+        ImgButton5 = PhotoImage(file="CatalystV2 Files/Btn5.png"); #Twitter Search Word
+
         ButtonQuitApp = Button(self.MainMenuWindow, image=ImgButton0, command=quit);
         ButtonQuitApp["bg"] = "#0089D8";
         ButtonQuitApp["border"] = "0";
-        ButtonQuitApp.place(relx="0.0335", rely="0.028");
+        ButtonQuitApp.place(relx="0.930", rely="0.028");
         ButtonSelection1 = Button(self.MainMenuWindow, image=ImgButton1, command=self.AnalyzeSentenceAction);
-        ButtonSelection1["bg"] = "#0089D8"; ButtonSelection1["border"]="0";
-        ButtonSelection1.place(relx="0.0655", rely="0.848");
-        ButtonSelection2 = Button(self.MainMenuWindow, image=ImgButton1, command=self.AnalyzeTwitterAction);####
-        ButtonSelection2["bg"] = "#0089D8"; ButtonSelection2["border"]="0";
-        ButtonSelection2.place(relx="0.3355", rely="0.848");
-        ButtonSelection3 = Button(self.MainMenuWindow, image=ImgButton1, command=self.AnalyzeVRSAction);####
-        ButtonSelection3["bg"] = "#0089D8"; ButtonSelection3["border"]="0";
-        ButtonSelection3.place(relx="0.5855", rely="0.848");
-##NEW BUTTON
-        ButtonSelection4 = Button(self.MainMenuWindow, image=ImgButton1, command=self.AnalyzeVRSAction);####
-        ButtonSelection4["bg"] = "#0089D8"; ButtonSelection3["border"]="0";
-        ButtonSelection4.place(relx="0.8155", rely="0.848");
-        #ButtonSelection1 = Button(self.MainMenuWindow, image=ImgButton1, command=self.AnalyzeSentenceAction);
-        #ButtonSelection1["bg"] = "#7c0000"; ButtonSelection1["border"]="0";
-        #ButtonSelection1.place(relx="0.0005", rely="0.315");
-        #ButtonSelection2 = Button(self.MainMenuWindow, image=ImgButton1);  # command required
-        #ButtonSelection2["bg"] = "#7c0000";
-        #ButtonSelection2["border"] = "0";
-        #ButtonSelection2.place(relx="0.0005", rely="0.415");
-        #ButtonSelection3 = Button(self.MainMenuWindow, image=ImgButton1);  # command required
-        #ButtonSelection3["bg"] = "#7c0000";
-        #ButtonSelection3["border"] = "0";
-        #ButtonSelection3.place(relx="0.0005", rely="0.515");
-        #ButtonSelection0 = Button(self.MainMenuWindow, image=ImgButton1, command=self.AnalysisViewHistory);
-        #ButtonSelection0["bg"] = "#7c0000";
-        #ButtonSelection0["border"] = "0";
-        #ButtonSelection0.place(relx="0.0005", rely="0.815");
+        ButtonSelection1["bg"] = "#087192"; ButtonSelection1["border"]="0";
+        ButtonSelection1.place(relx="0.0525", rely="0.225");
+        ButtonSelection2 = Button(self.MainMenuWindow, image=ImgButton2, command=self.AnalyzeTwitterAction);####
+        ButtonSelection2["bg"] = "#087192"; ButtonSelection2["border"]="0";
+        ButtonSelection2.place(relx="0.050", rely="0.725");
+        ButtonSelection3 = Button(self.MainMenuWindow, image=ImgButton3, command=self.AnalyzeVRSAction);####
+        ButtonSelection3["bg"] = "#087192"; ButtonSelection3["border"]="0";
+        ButtonSelection3.place(relx="0.790", rely="0.235");
+        ButtonSelection4 = Button(self.MainMenuWindow, image=ImgButton4, command=self.OpenTwitterWeb);  ####
+        ButtonSelection4["bg"] = "#087192";
+        ButtonSelection4["border"] = "0";
+        ButtonSelection4.place(relx="0.786", rely="0.725");
+
+        ButtonSelection5 = Button(self.MainMenuWindow, image=ImgButton5, command=self.TwitterSearchAction);  ####
+        ButtonSelection5["bg"] = "#087192";
+        ButtonSelection5["border"] = "0";
+        ButtonSelection5.place(relx="0.448", rely="0.725");
+
         self.MainMenuWindow.mainloop();
+
 
     def AnalyzeSentenceAction(self): #OPTION #1 SELECTED IN MENU
         import winsound;
@@ -153,7 +158,16 @@ class SentimentApp:
         Selection = 3;
         print("Selection = ");
         print(Selection);
+        print("Selection = ");
+        print(Selection);
         self.MainMenuWindow.destroy();
+
+    def TwitterSearchAction(self):
+        import winsound;
+        winsound.PlaySound('BtnClick2.wav', winsound.SND_ASYNC);global Selection;
+        Selection = 4;
+        self.MainMenuWindow.destroy();
+
 
     def AnalyzeSingleSentence(self): #SET OR DRIVER INPUT WINDOW
         import winsound;
@@ -431,7 +445,7 @@ class SentimentApp:
         elif (snegative > spositive and snegative > positive and snegative > wpositive and snegative > neutral and snegative > negative and snegative > wnegative):
             LabelSentenceResult = Label(self.AnalysisTwitterWindow,text="The Lexical Analysis Result returns Strongly Negative", bg="#0053B1",fg="White",font=("Agency FB bold", 18), width="100", height="1")
             LabelSentenceResult.place(relx="0.0015", rely="0.435");
-        elif (negative > spositive and snegative > positive and snegative > wpositive and snegative > neutral and snegative > snegative and snegative > wnegative):
+        elif (negative > spositive and negative > positive and negative > wpositive and negative > neutral and negative > snegative and negative > wnegative):
             LabelSentenceResult = Label(self.AnalysisTwitterWindow,text="The Lexical Analysis Result returns Negative", bg="#0053B1", fg="White",font=("Agency FB bold", 18), width="100", height="1")
             LabelSentenceResult.place(relx="0.0015", rely="0.435");
         elif (wnegative > spositive and snegative > positive and snegative > wpositive and snegative > neutral and snegative > snegative and snegative > negative):
@@ -492,8 +506,6 @@ class SentimentApp:
         global VRS_Scan;
         VRS_Scan=1;print("Selection = ");print(Selection);
         self.AnalyzeVRSSystemWindow.destroy();
-
-
 
     def InititateVRSProcess(self):
         self.InititateVRSProcessWindow = Tk();
@@ -574,10 +586,148 @@ class SentimentApp:
         self.LabelViewSpeech5.place(relx="0.0325", rely="0.835");
         self.InititateVRSProcessWindow.mainloop();
 
-    #def searchTwitterOption(self):
+    def TwitterSearchMenu(self):
+        import winsound;
+        winsound.PlaySound('BtnClick2.wav', winsound.SND_ASYNC);
+        self.TwitterSearchMenuWindow = Tk();
+        self.TwitterSearchMenuWindow.title("Search on Twitter");
+        self.TwitterSearchMenuWindow.geometry("500x300");photoImages = PhotoImage(file="#5.png", master=self.TwitterSearchMenuWindow);
+        BgImages = Label(self.TwitterSearchMenuWindow, image=photoImages);
+        BgImages.pack();
+        self.LabelAnalyzeSingleSentence = Label(self.TwitterSearchMenuWindow,text="Type a subject to search :", bg="#050529",fg = "#15AFAD",font=("Agency FB bold", 20), width="45", height="1");
+        self.LabelAnalyzeSingleSentence.place(relx="0.0325", rely="0.335");
+        self.SearchText = StringVar();
+        self.EntrySearch = Entry(self.TwitterSearchMenuWindow,textvariable=self.SearchText, bg="#15AFAD",fg = "#050529",font=("Agency FB bold", 20),width="38");
+        self.EntrySearch.place(relx="0.0325", rely="0.535");
+        self.SearchAction = Button(self.TwitterSearchMenuWindow, text="Analyze", bg="#050529",fg = "#15AFAD",font=("Agency FB bold", 17), width="10", command=self.InitiateSearchAction);
+        self.SearchAction.place(relx="0.265", rely="0.735");
+        self.TwitterSearchMenuWindow.mainloop();
 
+    def InitiateSearchAction(self):
+        import winsound;
+        winsound.PlaySound('BtnClick2.wav', winsound.SND_ASYNC);
+        TextSentence = self.SearchText.get(); #This is the search to initiate
+        TweetStorageFile = open('SearchTwitter.txt', 'w');
+        TweetStorageFile.write("tweets");
+        TweetStorageFile.close();
+        consumerKey = "e5QiuLWa3mJyricV2tYZh7L4D"
+        consumerSecret = "d4cmR54P50QePxHR4SZcESYNk9g0D0ZElvwI3PKurbIn1xUgwg"
+        accessToken = "1092337126773932034-SPqlH0oeldiBaaYmHSQaSGSbLzlcFB"
+        accessTokenSecret = "JqRFzQ4voZIgz0pWA0SBomGr7zhYbzH9ItsfnLf073U56"
+        auth = tweepy.OAuthHandler(consumerKey, consumerSecret)
+        auth.set_access_token(accessToken, accessTokenSecret)
+        api = tweepy.API(auth)
+        self.tweets = api.user_timeline();
+        # search = api.GetSearch("happy"); # Replace happy with your search
+        Polarity = 0;
+        positive = 0;
+        wpositive = 0;
+        spositive = 0;
+        negative = 0;
+        wnegative = 0;
+        snegative = 0;
+        neutral = 0;
+        iteration = 0;
+        TweetStorageFile = open('SearchForTweets.txt', 'w');
+        TweetStorageFile.write("tweets,value");
+        TweetStorageFile.close();
+        for tweet in self.tweets:
+            # self.tweetText.append(self.cleanTweet(tweet.text).encode('utf-8'));
+            TweetStorageFile = open('SearchForTweets.txt', 'a');
+            # TweetWriter = csv.writer(TweetStorageFile);
+            TweetStorageFile.write("\n");
+            Analysis = TextBlob(tweet.text);
+            Value = Analysis.sentiment.polarity;
+            ValueStr= str(Value);
 
+            Polarity += Analysis.sentiment.polarity  # adding up polarities to find the average later
+            TweetStorageFile.write(tweet.text);
+            TweetStorageFile.write(","+ValueStr);
+            TweetStorageFile.close();
+            iteration = iteration + 1; #print(iteration);
+        print(TextSentence);
+        #TweetReaderFile=open('SearchForTweets.txt', 'r');
+        with open("SearchForTweets.txt",mode="r") as csv_file:
+            csv_reader = csv.DictReader(csv_file);
+            sum = 0; #THIS TIME ITS DIFFERENT
+            #ArrayFetch = [];
+            AllTweets = "";
+            for row in csv_reader:
+                fetchString = row["tweets"];
+                fetchValue= row['value']
+                if TextSentence in fetchString:
+                    AllTweets=AllTweets+fetchString+" : "+fetchValue+"\n";
+                    fetchValueInt=float(row['value']);
+                    if (fetchValueInt == 0):  # Adding reaction of how ppl are reacting to find average later.
+                        neutral += 1
+                    elif (fetchValueInt > 0 and fetchValueInt <= 0.3):
+                        wpositive += 1
+                    elif (fetchValueInt > 0.3 and fetchValueInt <= 0.6):
+                        positive += 1
+                    elif (fetchValueInt > 0.6 and fetchValueInt <= 2):
+                        spositive += 1
+                    elif (fetchValueInt > -0.3 and fetchValueInt <= 0):
+                        wnegative += 1
+                    elif (fetchValueInt > -0.6 and fetchValueInt <= -0.3):
+                        negative += 1
+                    elif (fetchValueInt > -2 and fetchValueInt <= -0.6):
+                        snegative += 1
+                    sum += 1;
+                ###ArrayFetch.append(fetchString); #AllTweets = AllTweets + ArrayFetch[iteration] + "\n";
 
+            print(AllTweets);  #DEBUGGERS
+        self.ViewAllTweetsWindow = Tk();
+        self.ViewAllTweetsWindow.title("Tweets Display");
+        self.ViewAllTweetsWindow.geometry("900x700");
+        photoImages = PhotoImage(file="#13.png", master=self.ViewAllTweetsWindow);
+        BgImages = Label(self.ViewAllTweetsWindow, image=photoImages);
+        LabelDisplayAlltweets = Label(self.ViewAllTweetsWindow, text=AllTweets, bg="#0053B1", fg="White",font=("Agency FB bold", 18));
+        LabelDisplayAlltweets.place(relx="0.275", rely="0.185");
+        BgImages.pack();
+        #Percentage Calculation ; #sum != iteration;
+        StronglyPositivePercent = (spositive / sum) * 100;
+        PositivePercent = (positive / sum) * 100;
+        WeaklyPositivePercent = (wpositive / sum) * 100;
+        StronglyNegativePercent = (snegative / sum) * 100;
+        NegativePercent = (negative / sum) * 100;
+        WeaklyNegativePercent = (wnegative / sum) * 100;
+        NeutralPercent = (neutral / sum) * 100;
+        #DEBUGGER #print(PositivePercent);
+        if (neutral > spositive and neutral > positive and neutral > wpositive and neutral > snegative and neutral > negative and neutral > wnegative):
+            LabelSentenceResult = Label(self.ViewAllTweetsWindow,text="The Overall Sentiment returns Neutral", bg="#0053B1", fg="White",font=("Agency FB bold", 18), width="100", height="1")
+            LabelSentenceResult.place(relx="0.0015", rely="0.855");
+        #elif()
+        elif (spositive > positive and spositive > wpositive and spositive > neutral and spositive > snegative and spositive > negative and spositive > wnegative):
+            LabelSentenceResult = Label(self.ViewAllTweetsWindow,text="The Overall Sentiment returns Strongly Positive", bg="#0053B1", fg="White",font=("Agency FB bold", 18), width="100", height="1")
+            LabelSentenceResult.place(relx="0.0015", rely="0.855");
+        elif (positive > spositive and positive > wpositive and positive > neutral and positive > snegative and positive > negative and positive > wnegative):
+            LabelSentenceResult = Label(self.ViewAllTweetsWindow,text="The Overall Sentiment returns Positive", bg="#0053B1", fg="White",font=("Agency FB bold", 18), width="100", height="1")
+            LabelSentenceResult.place(relx="0.0015", rely="0.855");
+        elif (wpositive > spositive and wpositive > positive and wpositive > neutral and wpositive > snegative and wpositive > negative and wpositive > wnegative):
+            LabelSentenceResult = Label(self.ViewAllTweetsWindow,text="The Overall Sentiment returns Weakly Positive", bg="#0053B1", fg="White",font=("Agency FB bold", 18), width="100", height="1")
+            LabelSentenceResult.place(relx="0.0015", rely="0.855");
+        elif (snegative > spositive and snegative > positive and snegative > wpositive and snegative > neutral and snegative > negative and snegative > wnegative):
+            LabelSentenceResult = Label(self.ViewAllTweetsWindow,text="The Overall Sentiment returns Strongly Negative", bg="#0053B1",fg="White",font=("Agency FB bold", 18), width="100", height="1")
+            LabelSentenceResult.place(relx="0.0015", rely="0.855");
+        elif (negative > spositive and negative > positive and negative > wpositive and negative > neutral and negative > snegative and negative > wnegative):
+            LabelSentenceResult = Label(self.ViewAllTweetsWindow,text="The Overall Sentiment returns Negative", bg="#0053B1", fg="White",font=("Agency FB bold", 18), width="100", height="1")
+            LabelSentenceResult.place(relx="0.0015", rely="0.855");
+        elif (wnegative > spositive and snegative > positive and snegative > wpositive and snegative > neutral and snegative > snegative and snegative > negative):
+            LabelSentenceResult = Label(self.ViewAllTweetsWindow,text="The Overall Sentiment returns Weakly Negative", bg="#0053B1",fg="White",font=("Agency FB bold", 18), width="100", height="1")
+            LabelSentenceResult.place(relx="0.0015", rely="0.855");
+        #print(negative);print(spositive);
+
+        import matplotlib.pyplot as plt
+        labels = 'Strongly Postive', 'Positive', 'Weakly Positive', 'Strongly Negative', 'Negative', 'Weakly Negative', 'Neutral';
+        sizes = [StronglyPositivePercent, PositivePercent, WeaklyPositivePercent, StronglyNegativePercent,
+                 NegativePercent, WeaklyNegativePercent, NeutralPercent];
+        explode = (0.1, 0, 0, 0, 0, 0, 0);
+        fig1, ax1 = plt.subplots();
+        ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%', shadow=True, startangle=90);
+        ax1.axis('equal');
+        plt.show();
+
+        self.ViewAllTweetsWindow.mainloop();
 
 Object1 = SentimentApp();
 Object1.SoundEffect1();
@@ -597,7 +747,10 @@ while 1 :
     elif (Selection == 3):
         Object1.AnalyzeVRSSystem();
         if(VRS_Scan==1):
-            Object1.InititateVRSProcess();
+            Object1.InititateVRSProcess()
+    elif (Selection==4):
+        Object1.TwitterSearchMenu();
+
     else :
         print("Error Logss2");
 

@@ -1,0 +1,19 @@
+tweets,value
+My favorite team is out of Champions League, feeling heartbroken.,0.5
+iphone 7 have a better display,0.5
+iphone x have a bad display and its hard to look at it,-0.49583333333333324
+Apple will suffer a bad loss in the future if this keeps up,-0.3499999999999999
+Apple is getting sloppy with each of their new release,-0.14015151515151517
+This is a story about a fascinating idea,0.7
+I think Apple should improve their product,0.0
+This is a Random tweet about a negative incident that happened today,-0.4
+the old iphone has the best bezel in the series,0.55
+I still think the previous iphone was the great,0.3166666666666667
+My overall impression on iphone x is not very good,-0.13461538461538458
+The glass design in the back of iphone x is elegant,0.25
+Apple provide us with a slow Charger in iphone x,-0.30000000000000004
+I hate the Notch in iphone x,-0.8
+Apple is a very profitable company,0.2
+fahim is a emotional boy,0.0
+This is my new happy tweet #newHappyTweet,0.4681818181818182
+This is a test Tweet. Happy Happy Happy! #Happy,0.8500000000000001
